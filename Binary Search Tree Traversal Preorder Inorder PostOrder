@@ -1,0 +1,160 @@
+
+import java.util.Stack;
+
+class Node{
+	Node left;
+	Integer data;
+	Node right;
+	
+	public Node(Integer data) {
+		
+		this.data=data;
+	}
+	
+	
+}
+
+public class BinarySearchTree {
+
+	Node root;
+
+	/* All the Left subtree nodes will be smaller than Root Node and all the nodes in the right subtree will be greater than or equal to Root node  */
+	public void createBSTree(Integer value) {
+		Node newNode = new Node(value);
+		/*If tree is empty then new node will be root node*/
+		if (root == null) {
+			root = newNode;
+
+			return;
+		}
+
+		Node currentNode = root;
+		Node parent = currentNode;
+		/*traverse the node from root node to leaf node in order to find the correct position of new node.*/
+		while (currentNode != null) {
+			if (currentNode.data > value) {
+				parent = currentNode;
+				currentNode = currentNode.left;
+
+			} else {
+				parent = currentNode;
+				currentNode = currentNode.right;
+
+			}
+
+		}
+
+		if (parent.data > value) {
+			parent.left = newNode;
+		
+		} else {
+			parent.right = newNode;
+			
+		}
+
+	}
+
+	
+/*Node will be traversed as Data-Left-Right */
+	public void preOrderTraversal() {
+      System.out.println("\n******PRE-ORDER TRAVERSAL*******");
+		Stack<Node> stack = new Stack<Node>();
+		Node currentNode = root;
+		while (!stack.isEmpty() || currentNode != null) {
+			/* Traversed the left subtree and push the node into stack*/
+			while (currentNode != null) {
+				System.out.print(" "+currentNode.data); // DATA
+				stack.push(currentNode);
+				currentNode = currentNode.left; // LEFT
+			}
+            
+			currentNode = stack.pop(); 
+
+			currentNode = currentNode.right; //RIGHT
+
+		}
+
+	}
+
+/*Node will be traversed as Left-Data-Right */
+	public void inOrderTraversal() {
+		 System.out.println("\n******IN-ORDER TRAVERSAL*******");
+		Stack<Node> stack = new Stack<Node>();
+		Node currentNode = root;
+		while (!stack.isEmpty() || currentNode != null) {
+			/* Traversed the left subtree and push the node into stack*/
+			while (currentNode != null) {
+				stack.push(currentNode);
+				currentNode = currentNode.left; // LEFT
+			}
+
+			currentNode = stack.pop();
+			System.out.print(" "+currentNode.data); // DATA
+			currentNode = currentNode.right;     //RIGHT
+
+		}
+
+	}
+
+	/*Node will be traversed as Left-Right-Data */
+	public void postOrderTraversal() {
+		 System.out.println("\n******POST-ORDER TRAVERSAL*******");
+		Stack<Node> stack = new Stack<Node>();
+		Node currentNode = root;
+
+		while (!stack.isEmpty() || currentNode != null) {
+			/* Traversed the left subtree and push the node into stack*/
+			while (currentNode != null) {
+
+				stack.push(currentNode);
+				currentNode = currentNode.left; 
+			}
+
+			currentNode = stack.peek();
+			if (currentNode.right == null) {
+                /*Print the node if its right child is null*/
+				System.out.print(" "+stack.pop().data);
+				
+                /*check if the current node is the right child of its parent on the stack, if so, print the parent node */
+				while (!stack.isEmpty() && currentNode == stack.peek().right) {
+					currentNode = stack.pop();
+					System.out.print(" "+currentNode.data);
+				}
+                
+				currentNode = null;
+
+			} else {
+
+				currentNode = currentNode.right;
+
+			}
+
+		}
+
+	}
+
+	public static void main(String[] args) {
+		
+		BinarySearchTree binarySearchTree = new BinarySearchTree();
+		binarySearchTree.createBSTree(6);
+		binarySearchTree.createBSTree(5);
+		binarySearchTree.createBSTree(12);
+		binarySearchTree.createBSTree(2);
+		binarySearchTree.createBSTree(4);
+		binarySearchTree.createBSTree(7);
+		binarySearchTree.createBSTree(24);
+		binarySearchTree.createBSTree(3);
+		binarySearchTree.createBSTree(20);
+		binarySearchTree.createBSTree(28);
+		binarySearchTree.createBSTree(18);
+		binarySearchTree.createBSTree(21);
+		binarySearchTree.createBSTree(27);
+
+		binarySearchTree.preOrderTraversal();
+		binarySearchTree.inOrderTraversal();
+		binarySearchTree.postOrderTraversal();
+	}
+
+}
+
+
